@@ -973,3 +973,135 @@ select:focus-visible {
   gap: 8px;
   flex-wrap: wrap;
 }
+
+.page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 24px;
+  background-color: inherit;
+}
+
+.page-header__content {
+  min-width: 0;
+}
+
+.page-header__title {
+  margin: 0;
+  font-size: 2rem;
+  line-height: 1.2;
+}
+
+.page-header__description {
+  margin: 8px 0 0;
+  color: #6b7280;
+  line-height: 1.6;
+}
+
+.page-header__action {
+  flex-shrink: 0;
+}
+
+@media (max-width: 600px) {
+  .page-header {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .page-header__title {
+    font-size: 1.625rem;
+  }
+}
+
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.form-field__label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #374151;
+}
+
+.form-field__input {
+  width: 100%;
+  min-width: 0;
+  padding: 10px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #111827;
+  font: inherit;
+}
+
+.form-field__input:focus {
+  outline: 2px solid #2563eb;
+  outline-offset: 1px;
+}
+
+.form-field__input[aria-invalid="true"] {
+  border-color: #dc2626;
+}
+
+.form-field__hint,
+.form-field__error {
+  margin: 0;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+}
+
+.form-field__hint {
+  color: #6b7280;
+}
+
+.form-field__error {
+  color: #dc2626;
+}
+
+
+
+.modal {
+  width: min(440px, calc(100% - 32px));
+  max-width: 100%;
+  padding: 0;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  background: #ffffff;
+  color: #111827;
+  box-shadow: 0 20px 60px rgb(0 0 0 / 20%);
+}
+
+.modal::backdrop {
+  background: rgb(17 24 39 / 55%);
+}
+
+.modal__content {
+  padding: 24px;
+}
+
+.modal__header {
+  margin-bottom: 20px;
+}
+
+.modal__title {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.modal__description {
+  margin: 8px 0 0;
+  color: #6b7280;
+  line-height: 1.5;
+}
+
+.modal__body {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 12px;
+}

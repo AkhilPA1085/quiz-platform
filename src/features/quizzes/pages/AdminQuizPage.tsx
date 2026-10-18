@@ -8,6 +8,9 @@ import type {
   QuestionType,
 } from "../../../types/quiz";
 import Button from "../../../components/ui/Button";
+import PageHeader from "../../../components/ui/PageHeader";
+import FormField from "../../../components/ui/FormField";
+import Modal from "../../../components/ui/Modal";
 
 interface QuestionDraft {
   id: string;
@@ -47,6 +50,8 @@ function AdminQuizPage() {
   const [questions, setQuestions] = useState<QuestionDraft[]>([]);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [quizToDelete, setQuizToDelete] = useState<Quiz | null>(null);
 
   function resetForm() {
     setEditingQuizId(null);
@@ -271,26 +276,31 @@ function AdminQuizPage() {
   }
 
   function handleDelete(quiz: Quiz) {
-    const confirmed = window.confirm(
-      `Delete "${quiz.title}"? This action cannot be undone.`,
-    );
+    setQuizToDelete(quiz);
+    setIsDeleteModalOpen(true);
+  }
 
-    if (!confirmed) return;
+  function confirmDelete() {
+    if (!quizToDelete) return;
 
     try {
-      deleteQuiz(quiz.id);
+      deleteQuiz(quizToDelete.id);
       refresh();
 
-      if (editingQuizId === quiz.id) {
+      if (editingQuizId === quizToDelete.id) {
         resetForm();
       }
 
       setError("");
-      setSuccess(`"${quiz.title}" was deleted.`);
+      setSuccess(`"${quizToDelete.title}" was deleted.`);
+      setIsDeleteModalOpen(false);
+      setQuizToDelete(null);
     } catch (err: unknown) {
       setError(
         err instanceof Error ? err.message : "Unable to delete this quiz.",
       );
+      setIsDeleteModalOpen(false);
+      setQuizToDelete(null);
     }
   }
 
@@ -307,13 +317,11 @@ function AdminQuizPage() {
 
   return (
     <section className="page-container admin-page">
-      <div className="page-heading">
-        <p className="eyebrow">ADMINISTRATION</p>
-        <h1>Manage quizzes</h1>
-        <p className="page-description">
-          Create quizzes, manage questions and update existing content.
-        </p>
-      </div>
+      <PageHeader
+        eyebrow="ADMINISTRATION"
+        title="Manage quizzes"
+        description="Create quizzes, manage questions and update existing content."
+      />
 
       {error && (
         <p className="admin-message error" role="alert">
@@ -329,22 +337,33 @@ function AdminQuizPage() {
       <form className="admin-form" onSubmit={handleSubmit}>
         <h2>{editingQuizId ? "Edit quiz" : "Create a quiz"}</h2>
 
-        <label htmlFor="quiz-title">Quiz title</label>
-        <input
+        <FormField
           id="quiz-title"
+          name="title"
+          label="Quiz title"
+          placeholder="Enter quiz title"
           value={title}
           onChange={(event) => setTitle(event.target.value)}
           required
         />
 
-        <label htmlFor="quiz-description">Description</label>
-        <textarea
+        <FormField
           id="quiz-description"
-          rows={3}
-          value={description}
-          onChange={(event) => setDescription(event.target.value)}
+          label="Description"
+          hint="Briefly explain what this quiz covers."
           required
-        />
+        >
+          <textarea
+            id="quiz-description"
+            name="description"
+            rows={3}
+            value={description}
+            onChange={(event) => setDescription(event.target.value)}
+            required
+            className="form-field__input"
+            aria-describedby="quiz-description-hint"
+          />
+        </FormField>
 
         <fieldset className="country-fieldset">
           <legend>Available countries</legend>
@@ -370,24 +389,24 @@ function AdminQuizPage() {
 
         <div className="admin-timer-fields">
           <div>
-            <label htmlFor="overall-time">Overall time limit (seconds)</label>
-            <input
+            <FormField
               id="overall-time"
+              name="timeLimit"
+              label="Overall time limit (seconds)"
               type="number"
-              min="1"
+              min={1}
               value={timeLimit}
               onChange={(event) => setTimeLimit(event.target.value)}
               placeholder="No overall limit"
             />
           </div>
           <div>
-            <label htmlFor="question-time">
-              Per-question time limit (seconds)
-            </label>
-            <input
+            <FormField
               id="question-time"
+              name="perQuestionTime"
+              label="Per-question time limit (seconds)"
               type="number"
-              min="1"
+              min={1}
               value={perQuestionTime}
               onChange={(event) => setPerQuestionTime(event.target.value)}
               placeholder="No per-question limit"
@@ -585,6 +604,32 @@ function AdminQuizPage() {
           ))
         )}
       </div>
+
+      <Modal
+        isOpen={isDeleteModalOpen}
+        title="Delete quiz?"
+        description={`Are you sure you want to delete "${quizToDelete?.title}"? This action cannot be undone.`}
+        onClose={() => setIsDeleteModalOpen(false)}
+      >
+        <Button
+          variant="secondary"
+          className="secondary-button"
+          onClick={() => {
+            setIsDeleteModalOpen(false);
+            setQuizToDelete(null);
+          }}
+        >
+          Cancel
+        </Button>
+
+        <Button
+          variant="danger"
+          className="remove-question-button"
+          onClick={confirmDelete}
+        >
+          Delete quiz
+        </Button>
+      </Modal>
     </section>
   );
 }

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { getLeaderboard } from "../../../data/quizService";
 import { useQuizStore } from "../../../store/quizStore";
 import EmptyState from "../../../components/ui/EmptyState";
+import PageHeader from "../../../components/ui/PageHeader";
 
 function formatDuration(seconds: number): string {
   const minutes = Math.floor(seconds / 60);
@@ -25,13 +26,12 @@ function LeaderboardPage() {
 
   return (
     <section className="page-container">
-      <div className="page-heading">
-        <p className="eyebrow">PERFORMANCE</p>
-        <h1>Leaderboard</h1>
-        <p className="page-description">
-          See how participants performed in each quiz.
-        </p>
-      </div>
+
+      <PageHeader
+        eyebrow="PERFORMANCE"
+        title="Leaderboard"
+        description="See how participants performed in each quiz."
+      />
 
       <div className="filter-bar">
         <label htmlFor="leaderboard-quiz">Choose a quiz</label>
