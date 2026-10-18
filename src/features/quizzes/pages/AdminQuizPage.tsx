@@ -7,6 +7,7 @@ import type {
   QuizQuestion,
   QuestionType,
 } from "../../../types/quiz";
+import Button from "../../../components/ui/Button";
 
 interface QuestionDraft {
   id: string;
@@ -405,7 +406,8 @@ function AdminQuizPage() {
 
         <div className="admin-questions-heading">
           <h2>Questions ({questions.length})</h2>
-          <button
+
+          <Button
             type="button"
             className="secondary-button"
             onClick={() =>
@@ -413,7 +415,7 @@ function AdminQuizPage() {
             }
           >
             Add question
-          </button>
+          </Button>
         </div>
 
         {questions.map((question, questionIndex) => (
@@ -492,7 +494,7 @@ function AdminQuizPage() {
                   required
                 />
 
-                <button
+                <Button
                   type="button"
                   className="remove-option-button"
                   disabled={question.options.length <= 2}
@@ -500,12 +502,12 @@ function AdminQuizPage() {
                   aria-label={`Remove option ${optionIndex + 1}`}
                 >
                   Remove
-                </button>
+                </Button>
               </div>
             ))}
 
             <div className="question-editor-actions">
-              <button
+              <Button
                 type="button"
                 className="secondary-button"
                 onClick={() =>
@@ -518,30 +520,31 @@ function AdminQuizPage() {
                 }
               >
                 Add option
-              </button>
-              <button
+              </Button>
+
+              <Button
                 type="button"
                 className="remove-question-button"
                 onClick={() => removeQuestion(questionIndex)}
               >
                 Remove question
-              </button>
+              </Button>
             </div>
           </fieldset>
         ))}
 
         <div className="admin-form-actions">
-          <button type="submit" className="primary-button">
+          <Button type="submit" className="primary-button">
             {editingQuizId ? "Save changes" : "Create quiz"}
-          </button>
+          </Button>
           {editingQuizId && (
-            <button
+            <Button
               type="button"
               className="secondary-button"
               onClick={resetForm}
             >
               Cancel editing
-            </button>
+            </Button>
           )}
         </div>
       </form>
@@ -562,20 +565,21 @@ function AdminQuizPage() {
                 </p>
               </div>
               <div className="admin-row-actions">
-                <button
+                <Button
                   type="button"
                   className="secondary-button"
                   onClick={() => editQuiz(quiz)}
                 >
                   Edit
-                </button>
-                <button
+                </Button>
+
+                <Button
                   type="button"
                   className="remove-question-button"
                   onClick={() => handleDelete(quiz)}
                 >
                   Delete
-                </button>
+                </Button>
               </div>
             </article>
           ))

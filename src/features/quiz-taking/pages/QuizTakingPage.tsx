@@ -1,4 +1,3 @@
-
 import { useEffect, useState, type FormEvent } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import {
@@ -9,6 +8,7 @@ import {
 } from "../../../data/quizService";
 import { useQuizStore } from "../../../store/quizStore";
 import type { CurrentQuestion } from "../../../types/quiz";
+import Button from "../../../components/ui/Button";
 
 function QuizTakingPage() {
   const { quizId } = useParams();
@@ -26,59 +26,57 @@ function QuizTakingPage() {
   const [displayedSeconds, setDisplayedSeconds] = useState<number | null>(null);
 
   useEffect(() => {
-  if (!attemptId || !current || current.remainingSeconds === null) {
-    setDisplayedSeconds(null);
-    return;
-  }
-
-  const initialSeconds = current.remainingSeconds;
-  const effectStartedAt = Date.now();
-  let expiryHandled = false;
-
-  setDisplayedSeconds(initialSeconds);
-
-  const intervalId = window.setInterval(() => {
-    const elapsedSeconds = Math.floor(
-      (Date.now() - effectStartedAt) / 1000,
-    );
-    const remaining = Math.max(0, initialSeconds - elapsedSeconds);
-
-    setDisplayedSeconds(remaining);
-
-    if (remaining > 0 || expiryHandled) return;
-
-    expiryHandled = true;
-
-    try {
-      // The service determines whether the question or entire quiz expired.
-      const nextQuestion = getCurrentQuestion(attemptId);
-
-      refresh();
-
-      if (nextQuestion === null) {
-        completeAttempt(attemptId);
-        refresh();
-        navigate(`/results/${attemptId}`, { replace: true });
-        return;
-      }
-
-      // The question timer expired; continue with the next question.
-      setCurrent(nextQuestion);
-      setSelectedOptionIds([]);
-      setError(null);
-    } catch (err: unknown) {
-      setError(
-        err instanceof Error
-          ? err.message
-          : "Unable to process the quiz timeout.",
-      );
+    if (!attemptId || !current || current.remainingSeconds === null) {
+      setDisplayedSeconds(null);
+      return;
     }
-  }, 250);
 
-  return () => {
-    window.clearInterval(intervalId);
-  };
-}, [attemptId, current, navigate, refresh]);
+    const initialSeconds = current.remainingSeconds;
+    const effectStartedAt = Date.now();
+    let expiryHandled = false;
+
+    setDisplayedSeconds(initialSeconds);
+
+    const intervalId = window.setInterval(() => {
+      const elapsedSeconds = Math.floor((Date.now() - effectStartedAt) / 1000);
+      const remaining = Math.max(0, initialSeconds - elapsedSeconds);
+
+      setDisplayedSeconds(remaining);
+
+      if (remaining > 0 || expiryHandled) return;
+
+      expiryHandled = true;
+
+      try {
+        // The service determines whether the question or entire quiz expired.
+        const nextQuestion = getCurrentQuestion(attemptId);
+
+        refresh();
+
+        if (nextQuestion === null) {
+          completeAttempt(attemptId);
+          refresh();
+          navigate(`/results/${attemptId}`, { replace: true });
+          return;
+        }
+
+        // The question timer expired; continue with the next question.
+        setCurrent(nextQuestion);
+        setSelectedOptionIds([]);
+        setError(null);
+      } catch (err: unknown) {
+        setError(
+          err instanceof Error
+            ? err.message
+            : "Unable to process the quiz timeout.",
+        );
+      }
+    }, 250);
+
+    return () => {
+      window.clearInterval(intervalId);
+    };
+  }, [attemptId, current, navigate, refresh]);
 
   useEffect(() => {
     if (!quizId) {
@@ -201,7 +199,9 @@ function QuizTakingPage() {
       <div className="question-header">
         <div>
           <p className="eyebrow">QUIZ IN PROGRESS</p>
-          <h1>Question {questionIndex + 1} of {totalQuestions}</h1>
+          <h1>
+            Question {questionIndex + 1} of {totalQuestions}
+          </h1>
         </div>
 
         {displayedSeconds !== null && (
@@ -211,8 +211,7 @@ function QuizTakingPage() {
               {Math.floor(displayedSeconds / 60)
                 .toString()
                 .padStart(2, "0")}
-              :
-              {(displayedSeconds % 60).toString().padStart(2, "0")}
+              :{(displayedSeconds % 60).toString().padStart(2, "0")}
             </strong>
           </div>
         )}
@@ -248,8 +247,7 @@ function QuizTakingPage() {
 
           {question.options.map((option, index) => {
             const checked = selectedOptionIds.includes(option.id);
-            const inputType =
-              question.type === "single" ? "radio" : "checkbox";
+            const inputType = question.type === "single" ? "radio" : "checkbox";
 
             return (
               <label
@@ -272,24 +270,29 @@ function QuizTakingPage() {
           })}
         </fieldset>
 
-        {error && <p className="inline-error" role="alert">{error}</p>}
+        {error && (
+          <p className="inline-error" role="alert">
+            {error}
+          </p>
+        )}
 
         <div className="quiz-actions">
           <Link className="secondary-button" to="/">
             Exit quiz
           </Link>
 
-          <button
+          <Button
             className="primary-button"
             type="submit"
             disabled={submitting}
           >
+            {" "}
             {submitting
               ? "Submitting…"
               : questionIndex === totalQuestions - 1
                 ? "Submit quiz"
                 : "Submit and continue"}
-          </button>
+          </Button>
         </div>
       </form>
     </section>
