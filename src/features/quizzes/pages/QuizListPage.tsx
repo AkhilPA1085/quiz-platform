@@ -1,4 +1,3 @@
-
 import { Link } from "react-router-dom";
 import { getQuizzes } from "../../../data/quizService";
 import { useQuizStore } from "../../../store/quizStore";
@@ -23,13 +22,9 @@ function QuizListPage() {
   const activeUserId = useQuizStore((state) => state.activeUserId);
   const selectedCountry = useQuizStore((state) => state.selectedCountry);
   const setActiveUser = useQuizStore((state) => state.setActiveUser);
-  const setSelectedCountry = useQuizStore(
-    (state) => state.setSelectedCountry,
-  );
+  const setSelectedCountry = useQuizStore((state) => state.setSelectedCountry);
 
-  const activeUser = database.users.find(
-    (user) => user.id === activeUserId,
-  );
+  const activeUser = database.users.find((user) => user.id === activeUserId);
 
   if (!activeUser) {
     return <p role="alert">Unable to find the selected user.</p>;
@@ -40,9 +35,7 @@ function QuizListPage() {
   const quizzes = getQuizzes(activeUserId, effectiveCountry);
 
   const availableCountries = database.countries.filter((country) =>
-    database.quizzes.some((quiz) =>
-      quiz.countries.includes(country.code),
-    ),
+    database.quizzes.some((quiz) => quiz.countries.includes(country.code)),
   );
 
   return (
@@ -75,13 +68,9 @@ function QuizListPage() {
           <select
             id="country-filter"
             value={selectedCountry}
-            onChange={(event) =>
-              setSelectedCountry(event.target.value)
-            }
+            onChange={(event) => setSelectedCountry(event.target.value)}
           >
-            <option value="">
-              User's country ({activeUser.country})
-            </option>
+            <option value="">User's country ({activeUser.country})</option>
 
             {availableCountries.map((country) => (
               <option key={country.code} value={country.code}>
@@ -94,8 +83,7 @@ function QuizListPage() {
 
       <div className="quiz-summary">
         <span>
-          {quizzes.length} {quizzes.length === 1 ? "quiz" : "quizzes"}{" "}
-          available
+          {quizzes.length} {quizzes.length === 1 ? "quiz" : "quizzes"} available
         </span>
         <span>
           Showing quizzes for{" "}
@@ -118,15 +106,11 @@ function QuizListPage() {
           {quizzes.map((quiz) => (
             <article className="quiz-card" key={quiz.id}>
               <div className="quiz-card-top">
-                <span className="quiz-tag">
-                  {quiz.questionCount} questions
-                </span>
+                <span className="quiz-tag">{quiz.questionCount} questions</span>
 
                 <span
                   className={
-                    quiz.completed
-                      ? "status-badge completed"
-                      : "status-badge"
+                    quiz.completed ? "status-badge completed" : "status-badge"
                   }
                 >
                   {quiz.completed ? "Completed" : "Not completed"}
@@ -139,9 +123,7 @@ function QuizListPage() {
               <div className="quiz-details">
                 <div>
                   <span className="detail-label">Overall time</span>
-                  <strong>
-                    {formatDuration(quiz.timeLimitSeconds)}
-                  </strong>
+                  <strong>{formatDuration(quiz.timeLimitSeconds)}</strong>
                 </div>
 
                 <div>
