@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { getLeaderboard } from "../../../data/quizService";
 import { useQuizStore } from "../../../store/quizStore";
+import EmptyState from "../../../components/ui/EmptyState";
 
 function formatDuration(seconds: number): string {
   const minutes = Math.floor(seconds / 60);
@@ -12,9 +13,7 @@ function formatDuration(seconds: number): string {
 
 function LeaderboardPage() {
   const quizzes = useQuizStore((state) => state.database.quizzes);
-  const [selectedQuizId, setSelectedQuizId] = useState(
-    quizzes[0]?.id ?? "",
-  );
+  const [selectedQuizId, setSelectedQuizId] = useState(quizzes[0]?.id ?? "");
 
   const entries = useMemo(() => {
     if (!selectedQuizId) return [];
@@ -22,9 +21,7 @@ function LeaderboardPage() {
     return getLeaderboard(selectedQuizId, 10);
   }, [selectedQuizId]);
 
-  const selectedQuiz = quizzes.find(
-    (quiz) => quiz.id === selectedQuizId,
-  );
+  const selectedQuiz = quizzes.find((quiz) => quiz.id === selectedQuizId);
 
   return (
     <section className="page-container">
@@ -59,18 +56,17 @@ function LeaderboardPage() {
       )}
 
       {entries.length === 0 ? (
-        <div className="empty-state">
-          <h2>No completed attempts yet</h2>
-          <p>Complete this quiz to appear on the leaderboard.</p>
-          {selectedQuizId && (
-            <Link
-              className="primary-button"
-              to={`/quiz/${selectedQuizId}`}
-            >
-              Take quiz
-            </Link>
-          )}
-        </div>
+        <EmptyState
+          title="No completed attempts yet"
+          description="Complete this quiz to appear on the leaderboard."
+          action={
+            selectedQuizId ? (
+              <Link className="primary-button" to={`/quiz/${selectedQuizId}`}>
+                Take quiz
+              </Link>
+            ) : undefined
+          }
+        />
       ) : (
         <div className="table-container">
           <table className="leaderboard-table">

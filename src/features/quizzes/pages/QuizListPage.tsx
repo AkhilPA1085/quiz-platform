@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { getQuizzes } from "../../../data/quizService";
 import { useQuizStore } from "../../../store/quizStore";
 import Card from "../../../components/ui/Card";
+import EmptyState from "../../../components/ui/EmptyState";
 
 function formatDuration(seconds: number | null): string {
   if (seconds === null) {
@@ -95,13 +96,10 @@ function QuizListPage() {
       </div>
 
       {quizzes.length === 0 ? (
-        <div className="empty-state">
-          <h2>No quizzes available</h2>
-          <p>
-            There are no quizzes for this country. Try selecting another
-            country.
-          </p>
-        </div>
+        <EmptyState
+          title="No quizzes available"
+          description="There are no quizzes for this country. Try selecting another country."
+        />
       ) : (
         <div className="quiz-grid">
           {quizzes.map((quiz) => (
