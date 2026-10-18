@@ -204,6 +204,7 @@ function finishAttempt(
   return result;
 }
 
+
 export function startOrResumeAttempt(
   quizId: string,
   userId: string,
@@ -217,7 +218,7 @@ export function startOrResumeAttempt(
 
   const user = database.users.find((item) => item.id === userId);
   if (!user) {
-    throw new Error(`User not found: ${userId}`);
+    throw new Error("User not found.");
   }
 
   if (!quiz.countries.includes(user.country)) {
@@ -232,7 +233,6 @@ export function startOrResumeAttempt(
   );
 
   if (existingAttempt) {
-    // An overall time limit applies across refreshes and resumed sessions.
     if (
       quiz.timeLimitSeconds !== null &&
       getElapsedSeconds(existingAttempt.startedAt) >= quiz.timeLimitSeconds
@@ -275,6 +275,7 @@ export function startOrResumeAttempt(
 
   return attempt;
 }
+
 
 export function getCurrentQuestion(attemptId: string): CurrentQuestion | null {
   const database = readDatabase();

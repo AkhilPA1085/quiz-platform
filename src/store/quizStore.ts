@@ -1,10 +1,8 @@
 
 import { create } from "zustand";
+import { createJSONStorage, persist } from "zustand/middleware";
 import type { QuizDatabase } from "../types/quiz";
-import {
-  getDatabase,
-  resetDatabase,
-} from "../data/quizService";
+import { getDatabase, resetDatabase } from "../data/quizService";
 
 interface QuizStore {
   database: QuizDatabase;
@@ -16,24 +14,40 @@ interface QuizStore {
   setSelectedCountry: (country: string) => void;
 }
 
-export const useQuizStore = create<QuizStore>((set) => ({
-  database: getDatabase(),
-  activeUserId: "u1",
-  selectedCountry: "",
-  refresh: () => {
-    set({ database: getDatabase() });
-  },
-  reset: () => {
-    set({
-      database: resetDatabase(),
+export const useQuizStore = create<QuizStore>()(
+  persist(
+    (set) => ({
+      database: getDatabase(),
       activeUserId: "u1",
       selectedCountry: "",
-    });
-  },
-  setActiveUser: (userId) => {
-    set({ activeUserId: userId });
-  },
-  setSelectedCountry: (country) => {
-    set({ selectedCountry: country });
-  },
-}));
+
+      refresh: () => {
+        set({ database: getDatabase() });
+      },
+
+      reset: () => {
+        set({
+          database: resetDatabase(),
+          activeUserId: "u1",
+          selectedCountry: "",
+        });
+      },
+
+      setActiveUser: (userId) => {
+        set({ activeUserId: userId });
+      },
+
+      setSelectedCountry: (country) => {
+        set({ selectedCountry: country });
+      },
+    }),
+    {
+      name: "quiz-platform-preferences",
+      storage: createJSONStorage(() => localStorage),
+      partialize: (state) => ({
+        activeUserId: state.activeUserId,
+        selectedCountry: state.selectedCountry,
+      }),
+    },
+  ),
+);
