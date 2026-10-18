@@ -905,3 +905,71 @@ select:focus-visible {
     grid-template-columns: 1fr;
   }
 }
+
+.empty-state {
+  padding: 40px 24px;
+  text-align: center;
+  border: 1px dashed #d1d5db;
+  border-radius: 12px;
+  background: #ffffff;
+}
+
+.empty-state__title {
+  margin: 0 0 8px;
+  font-size: 1.25rem;
+}
+
+.empty-state__description {
+  margin: 0;
+  color: #6b7280;
+  line-height: 1.6;
+}
+
+.empty-state__action {
+  margin-top: 20px;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+
+.badge--success {
+  color: #166534;
+  background: #dcfce7;
+}
+
+.badge--neutral {
+  color: #4b5563;
+  background: #f3f4f6;
+}
+
+.badge--warning {
+  color: #92400e;
+  background: #fef3c7;
+}
+
+.badge--danger {
+  color: #991b1b;
+  background: #fee2e2;
+}
+
+.badge--info {
+  color: #1d4ed8;
+  background: #dbeafe;
+}
+
+.user-selector {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}

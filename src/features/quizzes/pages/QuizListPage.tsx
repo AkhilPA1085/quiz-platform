@@ -3,6 +3,7 @@ import { getQuizzes } from "../../../data/quizService";
 import { useQuizStore } from "../../../store/quizStore";
 import Card from "../../../components/ui/Card";
 import EmptyState from "../../../components/ui/EmptyState";
+import Badge from "../../../components/ui/Badge";
 
 function formatDuration(seconds: number | null): string {
   if (seconds === null) {
@@ -107,13 +108,9 @@ function QuizListPage() {
               <div className="quiz-card-top">
                 <span className="quiz-tag">{quiz.questionCount} questions</span>
 
-                <span
-                  className={
-                    quiz.completed ? "status-badge completed" : "status-badge"
-                  }
-                >
+                <Badge variant={quiz.completed ? "success" : "neutral"}>
                   {quiz.completed ? "Completed" : "Not completed"}
-                </span>
+                </Badge>
               </div>
 
               <h2>{quiz.title}</h2>
