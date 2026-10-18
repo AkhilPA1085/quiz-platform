@@ -9,6 +9,7 @@ import {
 import { useQuizStore } from "../../../store/quizStore";
 import type { CurrentQuestion } from "../../../types/quiz";
 import Button from "../../../components/ui/Button";
+import PageHeader from "../../../components/ui/PageHeader";
 
 function QuizTakingPage() {
   const { quizId } = useParams();
@@ -197,12 +198,11 @@ function QuizTakingPage() {
   return (
     <section className="page-container quiz-taking-page">
       <div className="question-header">
-        <div>
-          <p className="eyebrow">QUIZ IN PROGRESS</p>
-          <h1>
-            Question {questionIndex + 1} of {totalQuestions}
-          </h1>
-        </div>
+
+        <PageHeader
+          eyebrow="QUIZ IN PROGRESS"
+          title={`Question ${questionIndex + 1} of ${totalQuestions}`}
+        />
 
         {displayedSeconds !== null && (
           <div className="timer" aria-live="polite">

@@ -4,6 +4,7 @@ import { useQuizStore } from "../../../store/quizStore";
 import Card from "../../../components/ui/Card";
 import EmptyState from "../../../components/ui/EmptyState";
 import Badge from "../../../components/ui/Badge";
+import PageHeader from "../../../components/ui/PageHeader";
 
 function formatDuration(seconds: number | null): string {
   if (seconds === null) {
@@ -44,13 +45,12 @@ function QuizListPage() {
   return (
     <section className="page-container">
       <div className="page-heading">
-        <div>
-          <p className="eyebrow">LEARN • PRACTICE • IMPROVE</p>
-          <h1>Available Quizzes</h1>
-          <p className="page-description">
-            Choose a quiz and test your knowledge.
-          </p>
-        </div>
+
+        <PageHeader
+          eyebrow="LEARN • PRACTICE • IMPROVE"
+          title="Available Quizzes"
+          description="Choose a quiz and test your knowledge."
+        />
 
         <div className="filters">
           <label htmlFor="active-user">Current user</label>
