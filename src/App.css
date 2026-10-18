@@ -832,3 +832,76 @@ select:focus-visible {
     flex-direction: column;
   }
 }
+
+
+.card {
+  min-width: 0;
+  padding: 20px;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 4%);
+}
+
+.card__header {
+  margin-bottom: 16px;
+}
+
+.card__title {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 700;
+}
+
+.card__description {
+  margin: 6px 0 0;
+  color: #6b7280;
+  line-height: 1.5;
+}
+
+.card__content {
+  min-width: 0;
+}
+
+.quiz-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.quiz-card .card__content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+.quiz-card .quiz-description {
+  flex: 1;
+}
+
+.quiz-card .primary-button {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: auto;
+}
+
+.quiz-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  align-items: stretch;
+}
+
+@media (max-width: 900px) {
+  .quiz-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .quiz-grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { getQuizzes } from "../../../data/quizService";
 import { useQuizStore } from "../../../store/quizStore";
+import Card from "../../../components/ui/Card";
 
 function formatDuration(seconds: number | null): string {
   if (seconds === null) {
@@ -104,7 +105,7 @@ function QuizListPage() {
       ) : (
         <div className="quiz-grid">
           {quizzes.map((quiz) => (
-            <article className="quiz-card" key={quiz.id}>
+            <Card className="quiz-card" key={quiz.id}>
               <div className="quiz-card-top">
                 <span className="quiz-tag">{quiz.questionCount} questions</span>
 
@@ -155,7 +156,7 @@ function QuizListPage() {
               <Link className="primary-button" to={`/quiz/${quiz.id}`}>
                 {quiz.completed ? "View quiz again" : "Start quiz"}
               </Link>
-            </article>
+            </Card>
           ))}
         </div>
       )}
