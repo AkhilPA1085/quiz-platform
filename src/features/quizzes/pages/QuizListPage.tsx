@@ -1,6 +1,9 @@
 import { Link } from "react-router-dom";
 import { getQuizzes } from "../../../data/quizService";
 import { useQuizStore } from "../../../store/quizStore";
+import Card from "../../../components/ui/Card";
+import EmptyState from "../../../components/ui/EmptyState";
+import Badge from "../../../components/ui/Badge";
 
 function formatDuration(seconds: number | null): string {
   if (seconds === null) {
@@ -94,27 +97,20 @@ function QuizListPage() {
       </div>
 
       {quizzes.length === 0 ? (
-        <div className="empty-state">
-          <h2>No quizzes available</h2>
-          <p>
-            There are no quizzes for this country. Try selecting another
-            country.
-          </p>
-        </div>
+        <EmptyState
+          title="No quizzes available"
+          description="There are no quizzes for this country. Try selecting another country."
+        />
       ) : (
         <div className="quiz-grid">
           {quizzes.map((quiz) => (
-            <article className="quiz-card" key={quiz.id}>
+            <Card className="quiz-card" key={quiz.id}>
               <div className="quiz-card-top">
                 <span className="quiz-tag">{quiz.questionCount} questions</span>
 
-                <span
-                  className={
-                    quiz.completed ? "status-badge completed" : "status-badge"
-                  }
-                >
+                <Badge variant={quiz.completed ? "success" : "neutral"}>
                   {quiz.completed ? "Completed" : "Not completed"}
-                </span>
+                </Badge>
               </div>
 
               <h2>{quiz.title}</h2>
@@ -155,7 +151,7 @@ function QuizListPage() {
               <Link className="primary-button" to={`/quiz/${quiz.id}`}>
                 {quiz.completed ? "View quiz again" : "Start quiz"}
               </Link>
-            </article>
+            </Card>
           ))}
         </div>
       )}

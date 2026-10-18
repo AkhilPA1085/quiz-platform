@@ -1,48 +1,47 @@
 # React Quiz Platform
 
-A client-side quiz platform built with React, TypeScript, and Vite. Users can browse and attempt quizzes, resume in-progress attempts, view results and leaderboards, while administrators can create, edit, and delete quizzes.
+A client-side quiz application built with React, TypeScript, and Vite. Users can browse quizzes, take or resume attempts, view results, and compare completed attempts on quiz leaderboards. The seeded admin user can create, edit, and delete quizzes.
 
 ## Features
 
-### Quiz Management
-- Browse quizzes available for the selected user's country.
-- Filter quizzes by country.
-- Create, edit, and delete quizzes.
-- Configure quiz questions, answer options, retake permissions, and time limits.
-- Validate quiz details before saving.
+### Quiz browsing and management
 
-### Quiz Taking
-- Answer single-select and multiple-select questions.
-- Navigate through a one-question-at-a-time interface.
-- Support overall quiz timers and per-question timers.
-- Resume in-progress attempts after refreshing the page.
-- Automatically handle expired attempts.
-- Prevent correct answers from being exposed through the question interface before submission.
+- Browse quizzes and filter the list by country.
+- Switch between seeded users to try the application with different user roles and countries.
+- Create, edit, and delete quizzes as the seeded admin user.
+- Configure quiz availability by country, single-select or multiple-select questions, answer options, correct answers, retake permissions, and optional overall and per-question time limits.
+- Validate required quiz fields, question content, answer options, correct answers, and timer values before saving.
 
-### Results and Leaderboard
-- Display scores, percentages, correct answers, incorrect answers, and completion time.
-- Track completion status and best scores independently for each user.
-- Rank completed attempts by score, using faster completion time to break ties.
+### Taking quizzes
+
+- Answer single-select and multiple-select questions in a one-question-at-a-time flow.
+- Use an overall quiz timer, a per-question timer, both, or neither.
+- Resume an in-progress attempt after refreshing the page.
+- When a per-question timer expires, record the question as unanswered and continue. When the overall timer expires, finish the attempt.
+- The question returned to the quiz interface contains question text and options, but not the correct-answer IDs.
+
+### Results and leaderboard
+
+- View the score, percentage, correct count, incorrect or unanswered count, and time taken for a completed attempt.
+- Track completion and best score separately for each user and quiz.
+- View a quiz leaderboard ranked by score, with faster completion time breaking ties. The leaderboard displays up to 10 completed attempts.
 
 ### Persistence
-- Seed initial data from a local JSON file.
-- Persist quiz data, attempts, and results in browser localStorage.
-- Preserve selected-user preferences across page refreshes.
-- Restore the original seed data using the Reset functionality.
 
-## Tech Stack
+- Initialize quiz data from `src/data/seed.json` when there is no saved database.
+- Store quizzes, attempts, and results in browser `localStorage`.
+- Persist the selected user and country filter across page refreshes.
 
-- React
-- TypeScript
+## Tech stack
+
+- React and TypeScript
 - Vite
 - React Router
 - Zustand
-- Zod
-- Vitest
-- React Testing Library
-- HTML and CSS
+- CSS
+- Vitest and React Testing Library
 
-## Getting Started
+## Getting started
 
 ### Prerequisites
 
@@ -58,33 +57,27 @@ git clone <YOUR_GITHUB_REPOSITORY_URL>
 cd quiz-platform
 ```
 
-Install dependencies:
+Install dependencies and start the development server:
 
 ```bash
 npm install
-```
-
-Start the development server:
-
-```bash
 npm run dev
 ```
 
-Open the local URL displayed in the terminal.
+Open the local URL printed by Vite.
 
-## Available Scripts
+## Available scripts
 
 | Command | Description |
 |---|---|
-| `npm run dev` | Start the development server |
-| `npx tsc -b` | Check TypeScript compilation |
-| `npx vitest run` | Run automated tests |
-| `npm run build` | Create a production build |
-| `npm run preview` | Preview the production build |
+| `npm run dev` | Start the Vite development server |
+| `npm run build` | Type-check the project and create a production build |
+| `npm run lint` | Run ESLint |
+| `npm run test` | Run the Vitest test suite |
+| `npm run test:watch` | Run Vitest in watch mode |
+| `npm run preview` | Preview the production build locally |
 
-## Architecture
-
-The application separates UI components, application state, domain types, and data operations.
+## Application structure
 
 ```text
 src/
@@ -107,21 +100,19 @@ src/
 └── index.css
 ```
 
-### Design Decisions
+- `src/data/quizService.ts` contains quiz persistence, quiz management, attempt handling, scoring, and leaderboard calculations.
+- `src/store/quizStore.ts` uses Zustand for application state and persists the selected user and country filter.
+- `src/features/` contains the quiz list and admin pages, quiz-taking flow, results page, and leaderboard page.
+- `src/data/seed.json` provides the initial countries, users, quizzes, and attempts.
 
-- **Service layer:** Quiz CRUD operations, attempt management, answer submission, scoring, and leaderboard calculations are handled outside UI components.
-- **State management:** Zustand manages shared application state, including the active user and selected country.
-- **Type safety:** TypeScript interfaces define the main domain entities and service contracts.
-- **Validation:** Zod is used for schema validation where configured.
-- **Persistence:** Browser storage keeps the application usable without a backend or external API.
-- **Feature organization:** Quiz management, quiz taking, results, and leaderboards are organized into separate feature areas.
+## Seeded users and administration
 
-## Data and Limitations
+The app starts with seeded users. Change the current user from the quiz list to explore the different user roles. The seeded admin user can access the quiz management page; this is a client-side role simulation, not authentication or server-side authorization.
 
-This is a frontend-only application. It does not require a backend or external API.
+## Limitations
 
-- Data is stored in the current browser's localStorage and is not synchronized between devices.
-- Clearing browser storage can remove saved progress.
-- Client-side answer protection is not equivalent to server-side security; users can inspect browser data.
-- Authentication and authorization are simulated through seeded users and roles.
-- The leaderboard is based
+- There is no backend or external API. Data is local to the current browser and is not synchronized across devices.
+- Clearing the browser's local storage removes saved quiz data and preferences. Initial quiz data is loaded again when the application next initializes its database.
+- Answer hiding is a UI/service boundary only. Correct answers are present in the client-side database, so this is not a security mechanism.
+- The seeded user selector simulates user identity; it does not provide authentication.
+- Results show score summaries, not a per-question review of selected and correct answers.

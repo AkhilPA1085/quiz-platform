@@ -832,3 +832,144 @@ select:focus-visible {
     flex-direction: column;
   }
 }
+
+
+.card {
+  min-width: 0;
+  padding: 20px;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 4%);
+}
+
+.card__header {
+  margin-bottom: 16px;
+}
+
+.card__title {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 700;
+}
+
+.card__description {
+  margin: 6px 0 0;
+  color: #6b7280;
+  line-height: 1.5;
+}
+
+.card__content {
+  min-width: 0;
+}
+
+.quiz-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.quiz-card .card__content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+.quiz-card .quiz-description {
+  flex: 1;
+}
+
+.quiz-card .primary-button {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: auto;
+}
+
+.quiz-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  align-items: stretch;
+}
+
+@media (max-width: 900px) {
+  .quiz-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .quiz-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.empty-state {
+  padding: 40px 24px;
+  text-align: center;
+  border: 1px dashed #d1d5db;
+  border-radius: 12px;
+  background: #ffffff;
+}
+
+.empty-state__title {
+  margin: 0 0 8px;
+  font-size: 1.25rem;
+}
+
+.empty-state__description {
+  margin: 0;
+  color: #6b7280;
+  line-height: 1.6;
+}
+
+.empty-state__action {
+  margin-top: 20px;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+
+.badge--success {
+  color: #166534;
+  background: #dcfce7;
+}
+
+.badge--neutral {
+  color: #4b5563;
+  background: #f3f4f6;
+}
+
+.badge--warning {
+  color: #92400e;
+  background: #fef3c7;
+}
+
+.badge--danger {
+  color: #991b1b;
+  background: #fee2e2;
+}
+
+.badge--info {
+  color: #1d4ed8;
+  background: #dbeafe;
+}
+
+.user-selector {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
