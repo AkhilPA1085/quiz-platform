@@ -35,6 +35,10 @@ nav {
   gap: 24px;
 }
 
+.app-nav {
+  flex-wrap: wrap;
+}
+
 .brand {
   font-size: 1.2rem;
   font-weight: 800;
@@ -55,6 +59,34 @@ nav {
 .nav-links a:hover,
 .nav-links a:focus-visible {
   color: #4338ca;
+}
+
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-left: auto;
+}
+
+.header-control {
+  display: grid;
+  gap: 4px;
+}
+
+.header-control label {
+  color: #596579;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.header-control select {
+  max-width: 180px;
+  padding: 8px 28px 8px 10px;
+  border: 1px solid #d9deea;
+  border-radius: 8px;
+  background: white;
+  color: #172033;
+  font: inherit;
 }
 
 .page-container {
@@ -86,28 +118,6 @@ h1 {
 .page-description {
   color: #687386;
   margin-top: 8px;
-}
-
-.filters {
-  display: grid;
-  gap: 8px;
-  min-width: 230px;
-}
-
-.filters label {
-  margin-top: 4px;
-  font-size: 0.85rem;
-  font-weight: 700;
-}
-
-.filters select {
-  width: 100%;
-  padding: 11px 12px;
-  border: 1px solid #d9deea;
-  border-radius: 8px;
-  background: white;
-  color: #172033;
-  font: inherit;
 }
 
 .quiz-summary {
@@ -252,10 +262,6 @@ select:focus-visible {
   .page-heading {
     flex-direction: column;
   }
-
-  .filters {
-    width: 100%;
-  }
 }
 
 @media (max-width: 600px) {
@@ -266,6 +272,21 @@ select:focus-visible {
     justify-content: center;
     padding: 16px 0;
     gap: 14px;
+  }
+
+  .header-controls {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .header-control {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .header-control select {
+    max-width: none;
+    width: 100%;
   }
 
   .nav-links {

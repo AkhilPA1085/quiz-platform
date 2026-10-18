@@ -25,8 +25,6 @@ function QuizListPage() {
   const database = useQuizStore((state) => state.database);
   const activeUserId = useQuizStore((state) => state.activeUserId);
   const selectedCountry = useQuizStore((state) => state.selectedCountry);
-  const setActiveUser = useQuizStore((state) => state.setActiveUser);
-  const setSelectedCountry = useQuizStore((state) => state.setSelectedCountry);
 
   const activeUser = database.users.find((user) => user.id === activeUserId);
 
@@ -38,50 +36,14 @@ function QuizListPage() {
 
   const quizzes = getQuizzes(activeUserId, effectiveCountry);
 
-  const availableCountries = database.countries.filter((country) =>
-    database.quizzes.some((quiz) => quiz.countries.includes(country.code)),
-  );
-
   return (
     <section className="page-container">
       <div className="page-heading">
-
         <PageHeader
           eyebrow="LEARN • PRACTICE • IMPROVE"
           title="Available Quizzes"
           description="Choose a quiz and test your knowledge."
         />
-
-        <div className="filters">
-          <label htmlFor="active-user">Current user</label>
-          <select
-            id="active-user"
-            value={activeUserId}
-            onChange={(event) => setActiveUser(event.target.value)}
-          >
-            {database.users.map((user) => (
-              <option key={user.id} value={user.id}>
-                {user.name}
-                {user.role === "admin" ? " (Admin)" : ""}
-              </option>
-            ))}
-          </select>
-
-          <label htmlFor="country-filter">Quiz country</label>
-          <select
-            id="country-filter"
-            value={selectedCountry}
-            onChange={(event) => setSelectedCountry(event.target.value)}
-          >
-            <option value="">User's country ({activeUser.country})</option>
-
-            {availableCountries.map((country) => (
-              <option key={country.code} value={country.code}>
-                {country.name} ({country.code})
-              </option>
-            ))}
-          </select>
-        </div>
       </div>
 
       <div className="quiz-summary">
