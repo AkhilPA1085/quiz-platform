@@ -5,6 +5,8 @@ import Card from "../../../components/ui/Card";
 import EmptyState from "../../../components/ui/EmptyState";
 import Badge from "../../../components/ui/Badge";
 import PageHeader from "../../../components/ui/PageHeader";
+import { useState } from "react";
+import { useDebounce } from "../../../hooks/useDebounce";
 
 function formatDuration(seconds: number | null): string {
   if (seconds === null) {
@@ -25,6 +27,8 @@ function QuizListPage() {
   const database = useQuizStore((state) => state.database);
   const activeUserId = useQuizStore((state) => state.activeUserId);
   const selectedCountry = useQuizStore((state) => state.selectedCountry);
+  const [query, setQuery] = useState("");
+  const searchQuery = useDebounce(query);
 
   const activeUser = database.users.find((user) => user.id === activeUserId);
 
@@ -36,6 +40,20 @@ function QuizListPage() {
 
   const quizzes = getQuizzes(activeUserId, effectiveCountry);
 
+  const filteredQuizzes = quizzes.filter((quiz) => {
+    const query = searchQuery.toLowerCase();
+    return (
+      quiz.title.toLowerCase().includes(query) ||
+      quiz.description.toLowerCase().includes(searchQuery)
+    );
+  });
+
+  console.log("filteredQuizzes", filteredQuizzes);
+
+  const handleSearch = (value: string) => {
+    setQuery(value);
+  };
+
   return (
     <section className="page-container">
       <div className="page-heading">
@@ -46,9 +64,17 @@ function QuizListPage() {
         />
       </div>
 
+      <input
+        placeholder="Search Quiz..."
+        onChange={(e) => handleSearch(e.target.value)}
+        value={query}
+        className="search-field"
+      />
+
       <div className="quiz-summary">
         <span>
-          {quizzes.length} {quizzes.length === 1 ? "quiz" : "quizzes"} available
+          {filteredQuizzes.length}{" "}
+          {filteredQuizzes.length === 1 ? "quiz" : "quizzes"} available
         </span>
         <span>
           Showing quizzes for{" "}
@@ -58,14 +84,14 @@ function QuizListPage() {
         </span>
       </div>
 
-      {quizzes.length === 0 ? (
+      {filteredQuizzes.length === 0 ? (
         <EmptyState
           title="No quizzes available"
           description="There are no quizzes for this country. Try selecting another country."
         />
       ) : (
         <div className="quiz-grid">
-          {quizzes.map((quiz) => (
+          {filteredQuizzes.map((quiz) => (
             <Card className="quiz-card" key={quiz.id}>
               <div className="quiz-card-top">
                 <span className="quiz-tag">{quiz.questionCount} questions</span>
@@ -110,7 +136,7 @@ function QuizListPage() {
                 </div>
               </div>
 
-              <Link className="primary-button" to={`/quiz/${quiz.id}`}>
+              <Link className="primary-button" to={`/quiz/details/${quiz.id}`}>
                 {quiz.completed ? "View quiz again" : "Start quiz"}
               </Link>
             </Card>

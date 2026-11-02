@@ -91,7 +91,7 @@ export function getQuizzes(userId: string, country?: string): QuizSummary[] {
     });
 }
 
-export function getQuiz(quizId: string): Quiz {
+export function getQuiz(quizId: any): Quiz {
   const database = readDatabase();
   const quiz = database.quizzes.find((item) => item.id === quizId);
 
@@ -204,7 +204,6 @@ function finishAttempt(
   return result;
 }
 
-
 export function startOrResumeAttempt(
   quizId: string,
   userId: string,
@@ -275,7 +274,6 @@ export function startOrResumeAttempt(
 
   return attempt;
 }
-
 
 export function getCurrentQuestion(attemptId: string): CurrentQuestion | null {
   const database = readDatabase();
@@ -523,4 +521,24 @@ export function getLeaderboard(quizId: string, limit = 10): LeaderboardEntry[] {
       timeTakenSeconds: attempt.timeTakenSeconds ?? 0,
       completedAt: attempt.completedAt ?? "",
     }));
+}
+
+export function getOverallRank(userId: string) {
+  const database = readDatabase();
+
+  const user = database.users.find((user) => user.id === userId);
+
+  if(!user) throw new Error("User Not Found")
+
+  const completedAttempts = database.attempts
+  .filter((attempt)=>attempt.userId === userId && attempt.status === "completed")
+
+  return false
+}
+
+export function getScore(userId:string, quizId:string){
+  const database = readDatabase()
+
+  const completedAttempts = database.attempts
+  .filter((attempt)=>attempt.quizId === quizId && attempt.status === "completed")
 }
