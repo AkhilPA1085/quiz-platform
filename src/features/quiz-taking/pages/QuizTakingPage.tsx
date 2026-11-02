@@ -26,6 +26,7 @@ function QuizTakingPage() {
   const [submitting, setSubmitting] = useState(false);
   const [displayedSeconds, setDisplayedSeconds] = useState<number | null>(null);
 
+
   useEffect(() => {
     if (!attemptId || !current || current.remainingSeconds === null) {
       setDisplayedSeconds(null);
@@ -182,6 +183,7 @@ function QuizTakingPage() {
       <section className="page-container">
         <div className="empty-state error-state">
           <h1>Unable to open quiz</h1>
+          <p>Score</p>
           <p role="alert">{error}</p>
           <Link className="primary-button" to="/">
             Back to quizzes
@@ -194,6 +196,8 @@ function QuizTakingPage() {
   if (!current) return null;
 
   const { question, questionIndex, totalQuestions } = current;
+
+  console.log("current",current)
 
   return (
     <section className="page-container quiz-taking-page">

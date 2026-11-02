@@ -1126,3 +1126,10 @@ select:focus-visible {
   justify-content: flex-end;
   gap: 12px;
 }
+
+
+.search-field{
+  padding: 10px 15px;
+  border: none;
+  width: 100%;
+}

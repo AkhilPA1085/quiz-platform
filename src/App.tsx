@@ -1,6 +1,8 @@
 import { Link, Outlet } from "react-router-dom";
 import "./App.css";
 import { useQuizStore } from "./store/quizStore";
+import Badge from "./components/ui/Badge";
+import { getOverallRank } from "./data/quizService";
 
 function App() {
   const database = useQuizStore((state) => state.database);
@@ -41,6 +43,7 @@ function App() {
                     <option key={user.id} value={user.id}>
                       {user.name}
                       {user.role === "admin" ? " (Admin)" : ""}
+                      {/* <Badge>{getOverallRank(user?.id)}</Badge> */}
                     </option>
                   ))}
                 </select>

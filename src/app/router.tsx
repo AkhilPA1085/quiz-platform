@@ -5,6 +5,7 @@ import QuizTakingPage from "../features/quiz-taking/pages/QuizTakingPage";
 import ResultPage from "../features/results/pages/ResultPage";
 import LeaderboardPage from "../features/leaderboard/pages/LeaderboardPage";
 import AdminQuizPage from "../features/quizzes/pages/AdminQuizPage";
+import QuizDescriptionPage from "../features/quizzes/pages/QuizDescriptionPage";
 
 export const router = createBrowserRouter([
   {
@@ -12,6 +13,7 @@ export const router = createBrowserRouter([
     element: <App />,
     children: [
       { index: true, element: <QuizListPage /> },
+      { path: "quiz/details/:quizId", element: <QuizDescriptionPage /> },
       { path: "quiz/:quizId", element: <QuizTakingPage /> },
       { path: "results/:attemptId", element: <ResultPage /> },
       { path: "leaderboard", element: <LeaderboardPage /> },
